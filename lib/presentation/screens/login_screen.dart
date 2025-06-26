@@ -16,7 +16,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 class LoginScreenState extends ConsumerState<LoginScreen> {
   TextEditingController usuario = TextEditingController();
   TextEditingController password = TextEditingController();
-  String texto = 'Ingrese el usuraio y contraseña';
+  String texto = 'Ingrese el usuario y contraseña';
   String textoingresado1 = '';
   String textoingresado2 = '';
   int R = 255;
@@ -47,15 +47,20 @@ final listaUsuarios = listUsers;
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            
             children: [
-              Text(
+              Center(
+                child: Text(
                 texto,
                 style: TextStyle(
-                  fontSize: 50,
+
+                  fontSize: 40,
                   color: Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
 
+              ),
+              
               Padding(
                 padding: EdgeInsets.all(20),
                 child: TextField(

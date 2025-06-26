@@ -12,13 +12,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
-  bool modoBorrado = false;
-  bool modoEditar = false;
-
   @override
   Widget build(BuildContext context) {
     final cards = ref.watch(cardProvider);
     final userID = ref.watch(userIDProvider);
+    final modo = ref.watch(modeProvider);
     final usuarioingresando = listUsers.firstWhere(
       (user) => user.id == userID,
       orElse:
@@ -33,9 +31,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       backgroundColor:
-          modoBorrado
+          modo == 'delete'
               ? const Color.fromARGB(255, 197, 20, 46)
-              : modoEditar
+              : modo == 'edit'
               ? const Color.fromARGB(255, 236, 240, 24)
               : Colors.white,
       appBar: AppBar(
@@ -99,18 +97,18 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 fit: BoxFit.cover,
               ),
               onTap: () {
-                if (modoBorrado) {
+                if (modo == 'delete') {
                   // Eliminar la carta
                   ref.read(cardProvider.notifier).state = [
                     for (final card in cards)
                       if (card.id != cards[index].id) card,
                   ];
-                } else if (modoEditar == true) {
+                } else if (modo == 'edit') {
                   ref.read(cardIDProvider.notifier).state = cards[index].id;
-                  context.push('/EditCard');
+                  context.push('/CardDae');
                 } else {
                   ref.read(cardIDProvider.notifier).state = cards[index].id;
-                  context.push('/CardDetail');
+                  context.push('/CardDae');
                 }
               },
             ),
@@ -121,8 +119,15 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
+            tooltip: "Agregar",
             onPressed: () {
-              context.push('/AddCard');
+              setState(() {
+                if (modo != 'add') {
+                  ref.read(modeProvider.notifier).state = 'add';
+                }
+               
+              });
+              context.push('/CardDae');
             },
             backgroundColor: const Color.fromARGB(255, 18, 127, 216),
             child: Icon(Icons.add),
@@ -130,25 +135,35 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
           SizedBox(height: 10),
           FloatingActionButton(
+            tooltip: "Editar",
             onPressed: () {
               setState(() {
-                modoBorrado = false;
-                modoEditar = !modoEditar;
+                if (modo != 'edit') {
+                  ref.read(modeProvider.notifier).state = 'edit';
+                }
+                else{
+                  ref.read(modeProvider.notifier).state = '';
+                }
               });
             },
             backgroundColor: const Color.fromARGB(255, 193, 196, 27),
-            child: Icon(modoEditar ? Icons.edit_off : Icons.edit),
+            child: Icon(modo == 'edit' ? Icons.edit_off : Icons.edit),
           ),
           SizedBox(height: 10),
           FloatingActionButton(
+            tooltip: "Eliminar",
             onPressed: () {
               setState(() {
-                modoEditar = false;
-                modoBorrado = !modoBorrado;
+                if (modo != 'delete') {
+                  ref.read(modeProvider.notifier).state = 'delete';
+                }
+                else{
+                  ref.read(modeProvider.notifier).state = '';
+                }
               });
             },
             backgroundColor: Colors.red,
-            child: Icon(modoBorrado ? Icons.cancel : Icons.delete),
+            child: Icon(modo == 'delete' ? Icons.cancel : Icons.delete),
           ),
         ],
       ),

@@ -6,6 +6,8 @@ import 'package:myapp/entieties/users.dart';
 
 StateProvider<String> userIDProvider = StateProvider<String>((ref) => '');
 StateProvider<int> cardIDProvider = StateProvider<int>((ref) => 0);
+StateProvider<String> modeProvider = StateProvider<String>((ref) => '');
+
 
 StateProvider<List<Users>> userProvider = StateProvider((ref) => [
 Users(
