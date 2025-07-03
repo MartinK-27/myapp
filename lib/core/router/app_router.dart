@@ -4,7 +4,7 @@ import 'package:myapp/presentation/screens/login_screen.dart';
 import 'package:myapp/presentation/screens/card_dae.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/login', 
   routes: [
     GoRoute(path: '/home', builder: (context, state) => HomeScreen()),
 
@@ -13,3 +13,4 @@ final appRouter = GoRouter(
     GoRoute(path: '/CardDae', builder: (context, state) => CardDae()),
   ],
 );
+//
